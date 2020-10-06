@@ -51,7 +51,41 @@ d3.csv("assets/data/data.csv").then(function (healthData) {
     // Add y-axis
     chartGroup.append("g")
         .call(leftAxis);
+// Create circles
+chartGroup.selectAll("circle")
+.data(healthData)
+.enter()
+.append("circle")
+.attr("cx", d => xScale(d.poverty))
+.attr("cy", d => yScale(d.healthcare))
+.attr("r", 9)
+.attr("fill", "#8ebfce")
+.attr("opacity", ".7");
 
+// Create circle labels
+chartGroup.selectAll()
+.data(healthData)
+.enter()
+.append('text')
+.attr("x", d => xScale(d.poverty) - 5)
+.attr("y", d => yScale(d.healthcare) + 3)
+.attr("fill", "white")
+.attr("font-size", "8")
+.text(d => d.abbr);
+
+// Create X axis label
+chartGroup.append('text')
+.attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+.attr("class", "axisText")
+.text("In Poverty (%)");
+
+// Create Y axis label
+chartGroup.append("text")
+.attr("transform", "rotate(-90)")
+.attr('y', 0 - margin.left + 50)
+.attr("x", 0 - (height / 2) - 60)
+.attr("class", "axisText")
+.text("Lacks Healthcare (%)");
 
 });
 
