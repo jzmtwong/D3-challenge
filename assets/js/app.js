@@ -30,6 +30,26 @@ d3.csv("assets/data/data.csv").then(function (healthData) {
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
     });
+    // Create the scales
+    var xScale = d3.scaleLinear()
+        .domain(d3.extent(healthData, d => d.poverty))
+        .range([0, width]);
+
+    var yScale = d3.scaleLinear()
+        .domain(d3.extent(healthData, d => d.healthcare))
+        .range([height, 0]);
+
+    // Create the axis
+    var bottomAxis = d3.axisBottom(xScale);
+    var leftAxis = d3.axisLeft(yScale);
+
+    // Add x-axis
+    chartGroup.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis);
+
+    // Add y-axis
+    chartGroup.append("g")
+        .call(leftAxis);
 };
-//sanity check
-console.log(healthData);
+
