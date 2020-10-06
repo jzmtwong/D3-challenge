@@ -51,5 +51,7 @@ d3.csv("assets/data/data.csv").then(function (healthData) {
     // Add y-axis
     chartGroup.append("g")
         .call(leftAxis);
-};
+
+
+});
 
