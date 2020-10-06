@@ -21,3 +21,15 @@ var svg = d3
 // Append an SVG group
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+// Import data from the CSV file
+d3.csv("assets/data/data.csv").then(function (healthData) {
+
+    // format the data 
+    healthData.forEach(function (data) {
+        data.poverty = +data.poverty;
+        data.healthcare = +data.healthcare;
+    });
+};
+//sanity check
+console.log(healthData);
