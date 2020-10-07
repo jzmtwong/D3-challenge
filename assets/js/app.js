@@ -11,7 +11,7 @@ var margin = {
 
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
-// create SVG wrapper, append an SVG group that will hold our information,
+// Create SVG wrapper, append an SVG group that will hold our information,
 var svg = d3
     .select("#scatter")
     .append("svg")
@@ -22,68 +22,14 @@ var svg = d3
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-//create initial parameters; x and y axis
-let selectedXAxis = 'poverty';
-let selectedYAxis = 'healthcare';
-
-//a function for updating the x-scale variable upon click of label
-function xScale(censusData, selectedXAxis) {
-    //scales
-    let xLinearScale = d3.scaleLinear()
-      .domain([d3.min(censusData, d => d[selectedXAxis]) * 0.8,
-        d3.max(censusData, d => d[selectedXAxis]) * 1.2])
-      .range([0, width]);
-
-    return xLinearScale;
-}
-//a function for updating y-scale variable upon click of label
-function yScale(censusData, selectedYAxis) {
-  //scales
-  let yLinearScale = d3.scaleLinear()
-    .domain([d3.min(censusData, d => d[selectedYAxis]) * 0.8,
-      d3.max(censusData, d => d[selectedYAxis]) * 1.2])
-    .range([height, 0]);
-
-  return yLinearScale;
-}
-//a function for updating the xAxis upon click
-function renderXAxis(newXScale, xAxis) {
-  let bottomAxis = d3.axisBottom(newXScale);
-
-  xAxis.transition()
-    .duration(2000)
-    .call(bottomAxis);
-
-  return xAxis;
-}
-
-//function used for updating yAxis variable upon click
-function renderYAxis(newYScale, yAxis) {
-  var leftAxis = d3.axisLeft(newYScale);
-
-  yAxis.transition()
-    .duration(2000)
-    .call(leftAxis);
-
-  return yAxis;
-}
-
-
-  });
-    
 // import data from the CSV file
 d3.csv("assets/data/data.csv").then(function (healthData) {
 
-    // format and parse the data 
+    // format the data 
     healthData.forEach(function (data) {
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
-        data.obesity = +data.obesity;
-        data.income = +data.income;
-        data.smokes = +data.smokes;
-        data.age = +data.age;
     });
-
     // create the scales
     var xScale = d3.scaleLinear()
         .domain(d3.extent(healthData, d => d.poverty))
