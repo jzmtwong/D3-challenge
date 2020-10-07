@@ -46,7 +46,30 @@ function yScale(censusData, selectedYAxis) {
 
   return yLinearScale;
 }
+//a function for updating the xAxis upon click
+function renderXAxis(newXScale, xAxis) {
+  let bottomAxis = d3.axisBottom(newXScale);
 
+  xAxis.transition()
+    .duration(2000)
+    .call(bottomAxis);
+
+  return xAxis;
+}
+
+//function used for updating yAxis variable upon click
+function renderYAxis(newYScale, yAxis) {
+  var leftAxis = d3.axisLeft(newYScale);
+
+  yAxis.transition()
+    .duration(2000)
+    .call(leftAxis);
+
+  return yAxis;
+}
+
+
+  });
     
 // import data from the CSV file
 d3.csv("assets/data/data.csv").then(function (healthData) {
