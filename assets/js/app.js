@@ -11,26 +11,57 @@ var margin = {
 
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
-// Create SVG wrapper, append an SVG group that will hold our information,
+// create SVG wrapper, append an SVG group that will hold our information,
 var svg = d3
     .select("#scatter")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
-// Append an SVG group
+// append an SVG group
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-// Import data from the CSV file
+//create initial parameters; x and y axis
+let selectedXAxis = 'poverty';
+let selectedYAxis = 'healthcare';
+
+//a function for updating the x-scale variable upon click of label
+function xScale(censusData, selectedXAxis) {
+    //scales
+    let xLinearScale = d3.scaleLinear()
+      .domain([d3.min(censusData, d => d[selectedXAxis]) * 0.8,
+        d3.max(censusData, d => d[selectedXAxis]) * 1.2])
+      .range([0, width]);
+
+    return xLinearScale;
+}
+//a function for updating y-scale variable upon click of label
+function yScale(censusData, selectedYAxis) {
+  //scales
+  let yLinearScale = d3.scaleLinear()
+    .domain([d3.min(censusData, d => d[selectedYAxis]) * 0.8,
+      d3.max(censusData, d => d[selectedYAxis]) * 1.2])
+    .range([height, 0]);
+
+  return yLinearScale;
+}
+
+    
+// import data from the CSV file
 d3.csv("assets/data/data.csv").then(function (healthData) {
 
-    // format the data 
+    // format and parse the data 
     healthData.forEach(function (data) {
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
+        data.obesity = +data.obesity;
+        data.income = +data.income;
+        data.smokes = +data.smokes;
+        data.age = +data.age;
     });
-    // Create the scales
+
+    // create the scales
     var xScale = d3.scaleLinear()
         .domain(d3.extent(healthData, d => d.poverty))
         .range([0, width]);
@@ -39,19 +70,19 @@ d3.csv("assets/data/data.csv").then(function (healthData) {
         .domain(d3.extent(healthData, d => d.healthcare))
         .range([height, 0]);
 
-    // Create the axis
+    // create the axis
     var bottomAxis = d3.axisBottom(xScale);
     var leftAxis = d3.axisLeft(yScale);
 
-    // Add x-axis
+    // add x-axis
     chartGroup.append("g")
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
 
-    // Add y-axis
+    // add y-axis
     chartGroup.append("g")
         .call(leftAxis);
-// Create circles
+// create circles
 chartGroup.selectAll("circle")
 .data(healthData)
 .enter()
@@ -62,7 +93,7 @@ chartGroup.selectAll("circle")
 .attr("fill", "#8ebfce")
 .attr("opacity", ".7");
 
-// Create circle labels
+// create circle labels
 chartGroup.selectAll()
 .data(healthData)
 .enter()
@@ -73,13 +104,13 @@ chartGroup.selectAll()
 .attr("font-size", "8")
 .text(d => d.abbr);
 
-// Create X axis label
+// create X axis label
 chartGroup.append('text')
 .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
 .attr("class", "axisText")
 .text("In Poverty (%)");
 
-// Create Y axis label
+// create Y axis label
 chartGroup.append("text")
 .attr("transform", "rotate(-90)")
 .attr('y', 0 - margin.left + 50)
