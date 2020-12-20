@@ -1,13 +1,13 @@
-# D3-challenge
+# Comparing Rates in Porverty and Healthcare
 
-**Core assignment completed**
+**Purpose**
 
-Using D3, created a chart that compared healthcare vs poverty by states in the USA, using 2014 Census data.
+Using Javascript, create a chart that compares healthcare vs poverty by states in the USA with 2014 Census data.
 
 **Feature(s)**
 
-The chart features pulling data from a local dataset and plotting it on a local website.
+The chart features data from the US Census Bureau.
 
-**Unfinished tasks**
+**Additional Information**
 
-The assignement included more dynamic functionality  that may be included in the future.
+used D3 and Javascript to create the chart.
