@@ -1,4 +1,4 @@
-# Comparing Rates in Porverty and Healthcare
+# Comparing Rates in Poverty and Healthcare
 
 **Purpose**
 
